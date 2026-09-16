@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .core.database import Base, engine
 from .core.config import settings
+from .core.middleware import RequestLoggingMiddleware, add_error_handlers
 from .api.endpoints import household, sarpanch, schemes, multilingual
 
 # Create database tables
@@ -10,8 +11,16 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.PROJECT_VERSION,
-    description="AI-Powered Panchayat Decision Support System for Smart Village Development"
+    description="AI-Powered Panchayat Decision Support System for Smart Village Development",
+    docs_url="/docs",
+    redoc_url="/redoc"
 )
+
+# Add logging middleware
+app.add_middleware(RequestLoggingMiddleware)
+
+# Add global error handlers
+add_error_handlers(app)
 
 # CORS middleware for frontend access
 app.add_middleware(
