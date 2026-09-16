@@ -39,3 +39,13 @@ def root():
 @app.get("/health")
 def health_check():
     return {"status": "healthy", "version": settings.PROJECT_VERSION}
+
+@app.post("/seed-database")
+def seed_database():
+    """Safe endpoint to initialize wards and schemes in the database"""
+    from .init_db import init_db
+    try:
+        init_db()
+        return {"status": "success", "message": "Database seeded successfully with wards and schemes"}
+    except Exception as e:
+        return {"status": "error", "message": f"Database seeding failed: {str(e)}"}
