@@ -49,3 +49,20 @@ def seed_database():
         return {"status": "success", "message": "Database seeded successfully with wards and schemes"}
     except Exception as e:
         return {"status": "error", "message": f"Database seeding failed: {str(e)}"}
+
+@app.post("/seed-demo-data")
+def seed_demo_data():
+    """Safe endpoint to populate demo households, families, and issues"""
+    import sys
+    import os
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
+    try:
+        from seed_demo_data import generate_demo_data
+        generate_demo_data()
+        return {
+            "status": "success",
+            "message": "Demo data seeded: 30 households, 100+ family members, 10+ village issues with AI recommendations"
+        }
+    except Exception as e:
+        return {"status": "error", "message": f"Demo data seeding failed: {str(e)}"}
