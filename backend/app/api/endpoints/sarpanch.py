@@ -1,7 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from ...core.database import get_db
+from ...core.auth_deps import get_optional_user, require_roles
+from ...models.user import User, UserRole
 from ...api.schemas import (
     PopulationAnalytics, WardAnalytics, DomainAnalytics,
     IssueResponse, RecommendationResponse, WardResponse

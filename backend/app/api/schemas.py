@@ -45,15 +45,37 @@ class HouseholdType(str, Enum):
     BPL = "BPL"
     ANTODAYA = "Antodaya"
 
-# User Schemas
+# User & Auth Schemas
 class UserCreate(BaseModel):
-    username: str
+    username: str = Field(..., min_length=3, max_length=50)
     email: EmailStr
-    password: str
-    full_name: str
-    role: UserRole
+    password: str = Field(..., min_length=6)
+    full_name: str = Field(..., min_length=2, max_length=100)
+    role: UserRole = UserRole.FAMILY_HEAD
     phone_number: Optional[str] = None
     preferred_language: str = "mr"
+
+class LoginRequest(BaseModel):
+    username_or_email: str
+    password: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: "UserResponse"
+
+class AuditLogResponse(BaseModel):
+    id: int
+    actor_id: int
+    actor_role: Optional[str]
+    action: str
+    resource_type: Optional[str]
+    resource_id: Optional[str]
+    details: Optional[dict]
+    timestamp: datetime
+
+    class Config:
+        from_attributes = True
 
 class UserResponse(BaseModel):
     id: int
@@ -61,6 +83,7 @@ class UserResponse(BaseModel):
     email: str
     full_name: str
     role: UserRole
+    phone_number: Optional[str] = None
     preferred_language: str
     is_active: bool
     created_at: datetime
