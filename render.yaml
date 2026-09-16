@@ -1,0 +1,53 @@
+# Render deployment configuration
+services:
+  # Backend API
+  - type: web
+    name: panchayat-backend
+    env: python
+    region: singapore
+    plan: free
+    buildCommand: pip install -r requirements.txt && python backend/init_db.py
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///./backend/smart_panchayat.db
+      - key: SECRET_KEY
+        generateValue: true
+      - key: VILLAGE_NAME
+        value: Alandi Gram Panchayat
+      - key: DISTRICT
+        value: Pune
+      - key: STATE
+        value: Maharashtra
+      - key: TOTAL_WARDS
+        value: 6
+
+  # Family Portal
+  - type: web
+    name: panchayat-family-portal
+    env: python
+    region: singapore
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run frontend/family_portal.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    envVars:
+      - key: API_BASE_URL
+        fromService:
+          type: web
+          name: panchayat-backend
+          property: url
+
+  # Sarpanch Dashboard
+  - type: web
+    name: panchayat-sarpanch-dashboard
+    env: python
+    region: singapore
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run frontend/sarpanch_dashboard.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    envVars:
+      - key: API_BASE_URL
+        fromService:
+          type: web
+          name: panchayat-backend
+          property: url

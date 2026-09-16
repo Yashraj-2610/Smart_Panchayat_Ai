@@ -1,9 +1,11 @@
 import streamlit as st
 import requests
 import json
+import os
 
-# Configuration
-API_BASE_URL = "http://localhost:8000/api/v1"
+# Configuration - Support environment variables for deployment
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000/api/v1")
+
 
 # Multilingual labels
 LABELS = {

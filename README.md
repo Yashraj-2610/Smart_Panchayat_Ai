@@ -174,6 +174,32 @@ streamlit run sarpanch_dashboard.py --server.port 8502
 
 ---
 
+## 🐳 Docker Deployment
+
+### Run with Docker Compose (Recommended)
+
+```bash
+# Build and start all services
+docker-compose up --build
+
+# Run in background
+docker-compose up -d
+
+# Stop services
+docker-compose down
+```
+
+### Deploy to Cloud Platforms
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed guides on:
+- **Railway** (Free tier, 1-click deploy)
+- **Render** (Free tier, automatic deploys)
+- **Fly.io** (Free tier, 3 VMs)
+- **VPS / Custom Server** (Docker setup)
+
+
+---
+
 ## 🎓 Academic Deliverables
 
 ### Course Outcomes Addressed

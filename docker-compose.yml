@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: panchayat-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./backend/smart_panchayat.db
+      - SECRET_KEY=${SECRET_KEY:-smart-panchayat-secret-key-2026}
+      - VILLAGE_NAME=Alandi Gram Panchayat
+      - DISTRICT=Pune
+      - STATE=Maharashtra
+    volumes:
+      - ./backend:/app/backend
+    command: uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - panchayat-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  family-portal:
+    build: .
+    container_name: panchayat-family-portal
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=http://backend:8000/api/v1
+    depends_on:
+      - backend
+    command: streamlit run frontend/family_portal.py --server.port 8501 --server.address 0.0.0.0
+    networks:
+      - panchayat-network
+
+  sarpanch-dashboard:
+    build: .
+    container_name: panchayat-sarpanch-dashboard
+    ports:
+      - "8502:8502"
+    environment:
+      - API_BASE_URL=http://backend:8000/api/v1
+    depends_on:
+      - backend
+    command: streamlit run frontend/sarpanch_dashboard.py --server.port 8502 --server.address 0.0.0.0
+    networks:
+      - panchayat-network
+
+networks:
+  panchayat-network:
+    driver: bridge
