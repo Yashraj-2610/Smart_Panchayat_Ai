@@ -1,0 +1,168 @@
+=== SLIDE 1 ===
+  - DEPARTMENT OF CSE (AI & ML)  •  FIRST REVIEW PRESENTATION
+  - AI-Powered Panchayat Decision Support System for Smart Village Development
+  - Multi-Agent, Multilingual Panchayat Decision Intelligence Platform
+  - Group Name:  Group 15
+  - Members:  202501110032 — Aarya Deowar
+  - 202501110033 — Yashraj Yadav
+  - 202501110034 — Mohini Thaware
+  - 202501110058 — Shourya Waydande
+  - Guide:  Mrs. Shruti Gadewar, Department of CSE (AI & ML)
+  - Relevant SDG Goal(s):  SDG 11 — Sustainable Cities & Communities  |  SDG 16 — Peace, Justice & Strong Institutions
+  - MIT Academy of Engineering, Alandi, Pune  |  Department of CSE (AI & ML)  |  Academic Year 2026-27
+
+=== SLIDE 2 ===
+  - SLIDE 2
+  - Background / Motivation
+  - Context of the Problem
+  - Health, education, agriculture & infrastructure data is fragmented and manually collected.
+  - Citizens and Sarpanch officials are affected by slow, inconsistent local governance.
+  - Why This Project Is Important
+  - Panchayats often lack a unified, ward-wise view of a problem's scale and severity.
+  - AI/ML enables automatic detection, transparent scoring, and evidence-based scheme matching.
+  - Link to SDG Goals
+  - SDG 11: strengthens inclusive, data-driven local governance and planning.
+  - SDG 16: builds accountable, transparent Panchayat-level institutions.
+  - SY B.Tech CSE (AIML)  |  Project First Review
+  - 2
+
+=== SLIDE 3 ===
+  - SLIDE 3
+  - Problem Statement
+  - Problem Definition
+  - Village-level decisions rely on fragmented, manually-collected data, so the Gram Panchayat cannot easily see which wards need action first.
+  - Scope
+  - Included:  Household/family registry, Sarpanch dashboard, multi-agent domain analysis, priority scoring, RAG scheme matching, multilingual text (EN/HI/MR).
+  - Excluded:  Real government-data integration, GIS mapping, offline/mobile deployment (Phase-1 prototype uses synthetic/demo data).
+  - Challenges in Current Scenario
+  - Manual, paper-based household and issue records are slow and error-prone.
+  - No real-time, unified visibility into ward-wise development indicators.
+  - Scheme-matching and prioritization are done informally, without documented evidence.
+  - SY B.Tech CSE (AIML)  |  Project First Review
+  - 3
+
+=== SLIDE 4 ===
+  - SLIDE 4
+  - Objectives
+  - Specific, Measurable Objectives
+  - Build a digital household/village registry with automatic population calculation from member records.
+  - Design a 13-agent multi-agent AI architecture for health, education, agriculture, water, infrastructure & finance analysis.
+  - Implement transparent, explainable 0–100 priority scoring to rank village problems.
+  - Provide multilingual (English/Hindi/Marathi) interaction and RAG-based, source-cited government-scheme matching.
+  - Alignment with SDG Goals
+  - Objectives 1 & 3 advance SDG 16 (accountable institutions); Objective 4 advances SDG 11 & SDG 10 (inclusive, equitable access).
+  - SY B.Tech CSE (AIML)  |  Project First Review
+  - 4
+
+=== SLIDE 5 ===
+  - SLIDE 5
+  - Literature Review Summary
+  - Existing Approaches / Related Work
+  - DigiGram (2026): ML-based complaint prioritization for a live Gram Panchayat.
+  - E-Gram Panchayat: web portal with an AI chatbot for citizen services.
+  - Smart-city multi-agent + RAG systems raise decision quality significantly.
+  - Research Gaps Identified
+  - Existing systems triage single complaints, not unified multi-domain analysis.
+  - None offer multilingual, RAG-grounded, evidence-cited scheme matching.
+  - How Our Project Adds Value
+  - 13-agent architecture with transparent, explainable 0–100 priority scoring.
+  - RAG-grounded scheme matching in English, Hindi & Marathi — beyond chatbots.
+  - SY B.Tech CSE (AIML)  |  Project First Review
+  - 5
+
+=== SLIDE 6 ===
+  - SLIDE 6
+  - System Architecture Diagram
+  - Architecture Overview
+  - Portals → Village Database → Data Ingestion → 6 Domain Agents → Priority/RAG Agents → Orchestrator → Dashboard
+  - High-Level Architecture
+  - SY B.Tech CSE (AIML)  |  Project First Review
+  - 6
+
+=== SLIDE 7 ===
+  - SLIDE 7
+  - Methodology / Project Planning
+  - High-Level Workflow
+  - Input → Ingestion → Domain Agents → Problem Detection → Priority/Scheme-RAG → Decision Agent → Dashboard
+  - Dataset & Technology Stack
+  - Dataset: synthetic households (~1,250 households / 6,100 members); govt. scheme PDFs (RAG); CSV/Excel import.
+  - Stack: React/Tailwind • FastAPI • LangGraph/LangChain • PostgreSQL • FAISS/Chroma • Pandas/NumPy • Docker
+  - Project Management
+  - Phase-wise milestones tracked against checkpoints.
+  - Tracking tool: Trello / Excel
+  - SY B.Tech CSE (AIML)  |  Project First Review
+  - 7
+
+=== SLIDE 8 ===
+  - SLIDE 8
+  - Ethical Considerations
+  - Possible Unethical Practices
+  - Misuse or unauthorized sharing of sensitive household data (income, health, caste).
+  - Biased priority scores skewing resources toward already well-served wards.
+  - Presenting AI recommendations as if they were official government decisions.
+  - Ethical Alternatives
+  - Role-based access control, encryption in transit, and audit logging for household records.
+  - Priority-score weights validated with faculty/Panchayat context; fairness checks across wards.
+  - Recommendations always labeled advisory — final decisions remain with Panchayat officials.
+  - Commitment to Professional Ethics
+  - We commit to using synthetic/demo data during prototyping, citing all scheme sources, and following the institute's Code of Conduct.
+  - SY B.Tech CSE (AIML)  |  Project First Review
+  - 8
+
+=== SLIDE 9 ===
+  - SLIDE 9
+  - Expected Outcomes
+  - Prototype Deliverables
+  - Family Head Portal, Sarpanch decision dashboard, multi-agent AI backend, RAG scheme knowledge base, multilingual (EN/HI/MR) responses.
+  - Performance Metrics
+  - Registration coverage accuracy, priority-score consistency, scheme-matching precision, response latency by language.
+  - Contribution to SDG Goals
+  - SDG 16 — transparent local governance; SDG 11 — inclusive planning access; SDG 10 — equitable multilingual access.
+  - SY B.Tech CSE (AIML)  |  Project First Review
+  - 9
+
+=== SLIDE 10 ===
+  - SLIDE 10
+  - Timeline / Work Plan
+  - Project Phases
+  - Phase 1–2:  Requirements, UI & Household Registry  —  Weeks 1–4
+  - Phase 3–4:  Panchayat Dashboard & AI Foundation  —  Weeks 4–8
+  - Phase 5–6:  Multi-Agent Orchestration & Multilingual Layer  —  Weeks 8–11
+  - Phase 7:  Testing & Final Demo  —  Weeks 11–12
+  - Timeline Visualization
+  - SY B.Tech CSE (AIML)  |  Project First Review
+  - 10
+
+=== SLIDE 11 ===
+  - SLIDE 11
+  - Group & Guide Details
+  - Group Members
+  - 202501110032 — Aarya Deowar
+  - 202501110033 — Yashraj Yadav
+  - 202501110034 — Mohini Thaware
+  - 202501110058 — Shourya Waydande
+  - Guide
+  - Mrs. Shruti Gadewar, Department of CSE (AI & ML)
+  - Acknowledgement
+  - We sincerely thank our guide, Mrs. Shruti Gadewar, and the Department of CSE (AI & ML) for their continuous support and guidance.
+  - SY B.Tech CSE (AIML)  |  Project First Review
+  - 11
+
+=== SLIDE 12 ===
+  - SLIDE 12
+  - Conclusion
+  - Summary
+  - Problem:  Gram Panchayat decisions rely on fragmented, manual data across health, education, agriculture, water & infrastructure.
+  - Objectives:  Multi-agent, multilingual AI platform with household registry, priority scoring & RAG-based scheme matching.
+  - Expected Impact:  Less manual consolidation, evidence-based planning, and AI governance accessible in local languages (SDG 11 & 16).
+  - Next Steps
+  - Finalize database schema & implement the Family Head Portal (household registry).
+  - Build the Sarpanch dashboard and begin LangGraph domain-agent development.
+  - Prepare synthetic dataset and begin multi-agent orchestration ahead of Review 2.
+  - SY B.Tech CSE (AIML)  |  Project First Review
+  - 12
+
+=== SLIDE 13 ===
+  - Thank You
+  - Questions & Suggestions Welcome
+
