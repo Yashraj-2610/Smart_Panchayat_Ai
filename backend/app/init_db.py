@@ -1,22 +1,38 @@
 """
 Database Initialization Module
-Seeds wards and government schemes into the database
+Seeds wards, government schemes, and default users into the database
+Includes health check and stats reporting
 """
-from .core.database import SessionLocal, engine, Base
+from .core.database import SessionLocal, engine, Base, get_database_health, get_database_stats
 from .models.ward import Ward
+from .models.user import User, UserRole
+from .core.security import hash_password
 from .services.rag_service import RAGService
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def init_db():
+    """Initialize database with default data"""
     # Create all tables
     Base.metadata.create_all(bind=engine)
 
     db = SessionLocal()
 
     try:
+        # Health check
+        health = get_database_health()
+        if health["connected"]:
+            logger.info(f"✓ Database connected ({health.get('tables', [])})")
+        else:
+            logger.error(f"Database health check failed: {health.get('error')}")
+            raise Exception(f"Cannot connect to database: {health.get('error')}")
+
         # Seed Wards
         existing_wards = db.query(Ward).count()
         if existing_wards == 0:
-            print("Seeding wards...")
+            logger.info("Seeding wards...")
             wards_data = [
                 {"ward_number": 1, "ward_name": "Ward 1 - Central"},
                 {"ward_number": 2, "ward_name": "Ward 2 - North"},
@@ -31,22 +47,32 @@ def init_db():
                 db.add(ward)
 
             db.commit()
-            print(f"✓ Seeded {len(wards_data)} wards")
+            logger.info(f"✓ Seeded {len(wards_data)} wards")
         else:
-            print(f"Wards already exist ({existing_wards} wards)")
+            logger.info(f"Wards already exist ({existing_wards} wards)")
 
         # Seed Government Schemes
-        print("Seeding government schemes...")
+        logger.info("Seeding government schemes...")
         RAGService.seed_schemes(db)
-        print("✓ Government schemes seeded")
+        logger.info("✓ Government schemes seeded")
 
-        print("\nDatabase initialization complete!")
+        # Log statistics
+        stats = get_database_stats()
+        logger.info(f"Database stats: {stats}")
+
+        print("\n" + "=" * 50)
+        print("Database initialization complete!")
+        print("=" * 50)
         print(f"Total Wards: {db.query(Ward).count()}")
         print(f"Total Schemes: {len(RAGService.GOVERNMENT_SCHEMES_DATA)}")
 
     except Exception as e:
-        print(f"Error during initialization: {e}")
+        logger.error(f"Error during database initialization: {e}")
         db.rollback()
         raise e
     finally:
         db.close()
+
+
+if __name__ == "__main__":
+    init_db()

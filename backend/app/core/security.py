@@ -178,3 +178,96 @@ def log_audit_event(
     except Exception:
         db.rollback()
         return None
+
+
+# ==========================================
+# 5. Rate Limiting (In-Memory)
+# ==========================================
+
+# Simple in-memory rate limiter (use Redis in production)
+_rate_limit_store: Dict[str, List[float]] = {}
+
+
+def check_rate_limit(
+    identifier: str,
+    max_requests: int = 100,
+    window_seconds: int = 60
+) -> dict:
+    """
+    Check if a request is within rate limits
+    identifier: IP address or user ID
+    max_requests: Max requests allowed in window
+    window_seconds: Time window in seconds
+
+    Returns:
+        {"allowed": bool, "remaining": int, "reset_in": int}
+    """
+    import time
+
+    now = time.time()
+    window_start = now - window_seconds
+
+    # Clean old entries
+    if identifier in _rate_limit_store:
+        _rate_limit_store[identifier] = [
+            ts for ts in _rate_limit_store[identifier]
+            if ts > window_start
+        ]
+
+    # Check limit
+    current_requests = len(_rate_limit_store.get(identifier, []))
+
+    if current_requests >= max_requests:
+        # Find when oldest request will expire
+        oldest = min(_rate_limit_store[identifier]) if _rate_limit_store[identifier] else now
+        reset_in = int(oldest + window_seconds - now)
+        return {
+            "allowed": False,
+            "remaining": 0,
+            "reset_in": reset_in,
+            "limit": max_requests,
+        }
+
+    # Add current request
+    if identifier not in _rate_limit_store:
+        _rate_limit_store[identifier] = []
+    _rate_limit_store[identifier].append(now)
+
+    return {
+        "allowed": True,
+        "remaining": max_requests - current_requests - 1,
+        "reset_in": window_seconds,
+        "limit": max_requests,
+    }
+
+
+def get_client_identifier(request) -> str:
+    """Get client identifier from request (IP or user ID)"""
+    # Try to get user ID from request state if available
+    if hasattr(request.state, "user_id") and request.state.user_id:
+        return f"user:{request.state.user_id}"
+
+    # Fall back to IP address
+    if request.client:
+        return f"ip:{request.client.host}"
+
+    return "unknown"
+
+
+def is_rate_limited(request, max_requests: int = None, window_seconds: int = None) -> bool:
+    """
+    Check if request should be rate limited
+    Uses settings if max_requests/window_seconds not provided
+    """
+    from .config import settings
+
+    if not settings.RATE_LIMIT_ENABLED:
+        return False
+
+    max_requests = max_requests or settings.RATE_LIMIT_REQUESTS
+    window_seconds = window_seconds or settings.RATE_LIMIT_PERIOD
+
+    identifier = get_client_identifier(request)
+    result = check_rate_limit(identifier, max_requests, window_seconds)
+
+    return not result["allowed"]
