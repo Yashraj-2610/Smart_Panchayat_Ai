@@ -4,12 +4,13 @@ from utils import (
     fetch_api,
     post_api,
     is_authenticated,
-    render_auth_sidebar,
+    get_current_user_role,
     render_privacy_badge,
     display_success,
     display_warning,
     display_info
 )
+from shared_login import show_login_interface
 
 # Configuration - Support environment variables for deployment
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000/api/v1")
@@ -122,7 +123,9 @@ lang = st.sidebar.selectbox(
 )
 
 # Render Authentication Box in sidebar
-render_auth_sidebar(API_BASE_URL)
+# Unified login interface (shared for both portals)
+with st.sidebar:
+    show_login_interface()
 
 def get_label(key: str, l: str = "en") -> str:
     return LABELS.get(l, LABELS["en"]).get(key, key)

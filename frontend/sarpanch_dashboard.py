@@ -9,11 +9,12 @@ from utils import (
     post_api,
     is_authenticated,
     get_current_user_role,
-    render_auth_sidebar,
     render_privacy_badge,
     display_success,
     display_warning,
     display_info
+)
+from shared_login import show_login_interface
 )
 
 # Configuration - Support environment variables for deployment
@@ -35,8 +36,9 @@ lang = st.sidebar.selectbox(
     format_func=lambda x: {"en": "English", "hi": "हिंदी (Hindi)", "mr": "मराठी (Marathi)"}[x]
 )
 
-# Render Authentication Box in sidebar
-render_auth_sidebar(API_BASE_URL)
+# Unified login interface (shared with Family Portal)
+with st.sidebar:
+    show_login_interface()
 
 menu = st.sidebar.radio("Navigation", [
     "📊 Overview Dashboard",
